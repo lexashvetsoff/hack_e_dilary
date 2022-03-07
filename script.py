@@ -38,17 +38,21 @@ def get_schoolkid(name):
         return schoolkid
 
 
-def fix_marks(schoolkid):
-    marks = Mark.objects.filter(schoolkid=schoolkid, points__lt=4)
-    for mark in  marks:
-        mark.points = 5
-        mark.save()
+def fix_marks(name):
+    child = get_schoolkid(name)
+    if child:
+        marks = Mark.objects.filter(schoolkid=child, points__lt=4)
+        for mark in  marks:
+            mark.points = 5
+            mark.save()
 
 
-def remove_chastisements(schoolkid):
-    chastisements = Chastisement.objects.filter(schoolkid=schoolkid)
-    for chastisement in chastisements:
-        chastisement.delete()
+def remove_chastisements(name):
+    child = get_schoolkid(name)
+    if child:
+        chastisements = Chastisement.objects.filter(schoolkid=child)
+        for chastisement in chastisements:
+            chastisement.delete()
         print('Удалили замечание из БД')
 
 
@@ -57,4 +61,5 @@ def create_commendation(name, name_lesson):
     child = get_schoolkid(name)
     if child:
         lesson = Lesson.objects.filter(year_of_study=child.year_of_study, group_letter=child.group_letter, subject__title=name_lesson).order_by('-date').first()
-        Commendation.objects.create(text=commendation, created=lesson.date, schoolkid=child, subject=lesson.subject, teacher=lesson.teacher)
+        if lesson:
+            Commendation.objects.create(text=commendation, created=lesson.date, schoolkid=child, subject=lesson.subject, teacher=lesson.teacher)

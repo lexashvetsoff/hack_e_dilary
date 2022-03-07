@@ -23,11 +23,11 @@ child = get_schoolkid('Фамилия Имя')
 ```
 * Для исправления плохих оценок:
 ```
-fix_marks(child)
+fix_marks('Фамилия Имя')
 ```
 * Для удаления замечаний:
 ```
-remove_chastisements(child)
+remove_chastisements('Фамилия Имя')
 ```
 * Для создания записи похвалы:
 ```
