@@ -1,4 +1,5 @@
-from datacenter.models import Schoolkid, Mark, Chastisement, Commendation, Lesson
+from datacenter.models import Schoolkid, Mark, Chastisement
+from datacenter.models import Commendation, Lesson
 import Model
 import random
 
@@ -27,6 +28,7 @@ COMMENDATIONS = [
         'Теперь у тебя точно все получится!'
     ]
 
+
 def get_schoolkid(name):
     try:
         schoolkid = Schoolkid.objects.get(full_name__contains=name)
@@ -42,7 +44,7 @@ def fix_marks(name):
     child = get_schoolkid(name)
     if child:
         marks = Mark.objects.filter(schoolkid=child, points__lt=4)
-        for mark in  marks:
+        for mark in marks:
             mark.points = 5
             mark.save()
 
@@ -60,6 +62,16 @@ def create_commendation(name, name_lesson):
     commendation = random.choice(COMMENDATIONS)
     child = get_schoolkid(name)
     if child:
-        lesson = Lesson.objects.filter(year_of_study=child.year_of_study, group_letter=child.group_letter, subject__title=name_lesson).order_by('-date').first()
+        lesson = Lesson.objects.filter(
+            year_of_study=child.year_of_study,
+            group_letter=child.group_letter,
+            subject__title=name_lesson
+        ).order_by('-date').first()
         if lesson:
-            Commendation.objects.create(text=commendation, created=lesson.date, schoolkid=child, subject=lesson.subject, teacher=lesson.teacher)
+            Commendation.objects.create(
+                text=commendation,
+                created=lesson.date,
+                schoolkid=child,
+                subject=lesson.subject,
+                teacher=lesson.teacher
+            )
