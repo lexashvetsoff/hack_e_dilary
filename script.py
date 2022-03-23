@@ -42,11 +42,12 @@ def get_schoolkid(name):
 
 def fix_marks(name):
     child = get_schoolkid(name)
-    if child:
-        marks = Mark.objects.filter(schoolkid=child, points__lt=4)
-        for mark in marks:
-            mark.points = 5
-            mark.save()
+    if not child:
+        return
+    marks = Mark.objects.filter(schoolkid=child, points__lt=4)
+    for mark in marks:
+        mark.points = 5
+        mark.save()
 
 
 def remove_chastisements(name):
