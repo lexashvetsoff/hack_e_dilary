@@ -32,9 +32,9 @@ COMMENDATIONS = [
 def get_schoolkid(name):
     try:
         schoolkid = Schoolkid.objects.get(full_name__contains=name)
-    except Model.MultipleObjectsReturned:
+    except Schoolkid.MultipleObjectsReturned:
         print('Найдено несколько учеников!')
-    except Model.DoesNotExist:
+    except Schoolkid.DoesNotExist:
         print('Не найдено ученика с таким именем!')
     else:
         return schoolkid
